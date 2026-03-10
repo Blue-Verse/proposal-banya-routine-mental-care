@@ -125,4 +125,136 @@ job:
 
 ## 6. 최종 산출물
 
-(8단계 완료 후 추가 예정)
+### 제안서 사이트 URL
+https://blue-verse.github.io/proposal-banya-routine-mental-care/
+
+### 지원 금액
+22,500,000원
+
+### 지원 기간
+90일
+
+### 클라이언트 질문 답변
+
+**Q: 프로젝트와 유사경험이 있다면 자세히 설명 부탁드립니다.**
+
+캘린더 앱, AI 연동, 게이미피케이션, 크로스플랫폼 모바일 앱 개발에 걸쳐 직접 수행한 유사 프로젝트 경험이 있습니다.
+
+1) Calendar Share — Flutter 기반 소셜 캘린더 앱 (2025)
+오픈소스 캘린더 라이브러리(TableCalendar)를 서비스 톤앤매너에 맞게 커스텀하고, 7종 FCM 푸시 알림 시스템, 소셜 로그인, Firebase + Supabase 듀얼 백엔드를 구축했습니다. 캘린더 이벤트 관리, 푸시 알림, 딥링크 네비게이션 등 반야루틴의 기세 예측 캘린더와 데일리 알림 기능 구현에 직접 적용 가능한 경험입니다.
+- 규모: 17,628 LOC, 45+ 화면, 7종 알림
+- 기술: Flutter, Firebase, Supabase, FCM, TableCalendar
+
+2) DayStarter — 게이미피케이션 수면 보상 알람 앱 (2022~2023, 자체 프로덕트)
+Spine 2D 스켈레톤 애니메이션 캐릭터 시스템(Deimo), 데일리 미션/퀘스트, 7단계 루트박스 이코노미, 행동 변화 유도 메커니즘을 구현했습니다. 반야루틴의 캐릭터(라토, 호담) UI 연동, 데일리 미션 처방, 미션 달성 스탬프/리액션 구현과 직접적으로 유사한 경험입니다.
+- 규모: 48 화면, 37 DB 모델, ~50K LOC, 3 플랫폼
+- 기술: Flutter, NestJS, PostgreSQL, Firebase, Spine 2D
+
+3) Fortune App — 사주 기반 운세 앱 (2024, 3개월 딜리버리)
+기획부터 스토어 출시까지 3개월 풀패키지로 Flutter 기반 B2C 앱을 완수했습니다. 소셜 로그인, 외부 API 연동 기반 맞춤형 콘텐츠 생성, 포인트/리워드 시스템 등을 구현했으며, 반야루틴과 동일한 90일 일정 내 MVP 완성 실적입니다.
+- 규모: 305 Dart 파일, ~16K LOC, 12+ 화면
+- 기술: Flutter, Firebase, BLoC, Node.js
+
+또한 AI Agent 프레임워크를 직접 설계·구축하며 LLM API 연동, RAG 파이프라인(벡터 검색 + 생성형 AI), 프롬프트 엔지니어링에 대한 깊은 기술 역량을 보유하고 있어, RAG 기반 멘탈 코칭 기능 구현에 자신있습니다.
+
+### 지원 내용 (전체 텍스트)
+
+안녕하세요, AI(RAG) 기반 멘탈 케어 캘린더 앱 개발 프로젝트에 지원합니다.
+
+본 프로젝트에 대한 상세 제안서(견적서, 공수계산서, PRD, 일정, 포트폴리오)를 별도 페이지로 준비하였습니다. 아래 링크에서 확인해 주시면 감사하겠습니다.
+▶ 제안서 상세 페이지: https://blue-verse.github.io/proposal-banya-routine-mental-care/
+▶ 위시켓 포트폴리오: https://www.wishket.com/partners/p/blueverse1/
+
+---
+
+<프로젝트 진행 제안>
+
+■ 프로젝트 분석
+3040 세대의 감정 자본 관리와 기세 예측을 위한 모바일 앱 '반야루틴' MVP 프로젝트입니다. 소셜 로그인 + 초기 진단, 자체 캐릭터 UI, 기세 예측 캘린더(날씨API + ChatGPT API), RAG 기반 AI 멘탈 코칭, 데일리 푸시 알림, 정기 구독 결제(포트원), 관리자 페이지를 포함하는 AOS/iOS 크로스플랫폼 앱입니다.
+
+기술 스택으로 Flutter(크로스플랫폼), NestJS(백엔드), PostgreSQL(DB), OpenAI API + Pinecone + LangChain(RAG), Firebase Auth/FCM(인증/알림), 포트원(결제)을 제안드립니다. 자체 AI 모델 학습 없이 기존 생성형 AI API와 RAG 연동 방식으로 예산과 기간 내 효율적으로 구현 가능합니다.
+
+■ 작업 일정
+
+[Phase 1: 기획 + 디자인] Day 1-23 (23일)
+- 요구사항 분석, 화면 설계(와이어프레임), DB/API 설계
+- 디자인 시스템 설정, 캐릭터(라토, 호담) UI 통합, 12+ 화면 디자인, 프로토타입
+
+[Phase 2: 핵심 기능 개발] Day 20-55 (36일)
+- 소셜 로그인(카카오/네이버/애플), 온보딩(초기 진단), 캐릭터 UI 연동
+- 기세 예측 캘린더(날씨API + ChatGPT API), RAG 시스템 구축, AI 멘탈 코칭
+
+[Phase 3: 부가 기능 + 통합] Day 53-75 (23일)
+- 데일리 푸시 알림(FCM), 월간 리포트, 구독 결제(포트원), 관리자 페이지
+
+[Phase 4: QA + 배포] Day 73-90 (18일)
+- 기능 테스트, 버그 수정, AOS/iOS 스토어 배포, 소스 이관, 문서 납품
+
+■ 마일스톤 및 산출물
+- M1 (Day 10): 설계 완료 — 요구사항 정의서, 와이어프레임, DB 스키마, API 명세서
+- M2 (Day 23): 디자인 완료 — Figma 디자인 시안 전체
+- M3 (Day 55): 핵심 기능 완료 — 로그인 → 캘린더 → AI 코칭 플로우 동작
+- M4 (Day 75): 전체 기능 통합 — 결제, 알림, 관리자 포함 전체 기능
+- M5 (Day 90): 최종 납품 — 스토어 배포, 소스 코드(Git), Figma, 완료 보고서, 매뉴얼
+
+■ 미팅 시 협의 필요 사항
+- 캐릭터(라토, 호담) 디자인 소스 형식 및 전달 일정
+- RAG 학습용 자체 텍스트 데이터(스레드, 블로그 칼럼 등) 제공 범위 및 형식
+- 초기 진단 문항 내용 및 기운 DNA 유형 분류 기준
+- 기세 예측 알고리즘 상세 로직 (날씨 + 성향 + AI 조합 비율)
+- 무료/유료 기능 분리 기준 상세
+- 관리자 페이지 요구 기능 상세
+- 예비창업패키지 선정 후 행정 절차 일정
+
+---
+
+<유사 프로젝트 진행 경험>
+
+▶ Calendar Share (2025)
+- 프로젝트 유형: B2C 소셜 캘린더 앱
+- 핵심 기능: 캘린더 라이브러리 커스텀, 7종 FCM 푸시 알림, 소셜 로그인, Firebase + Supabase 듀얼 백엔드
+- 유사점: 캘린더 커스텀, 푸시 알림, Flutter 크로스플랫폼, 소셜 기능
+- 기술 스택: Flutter, Firebase, Supabase, FCM, TableCalendar
+
+▶ DayStarter (2022~2023)
+- 프로젝트 유형: B2C 게이미피케이션 행동변화 앱
+- 핵심 기능: Spine 2D 캐릭터 시스템, 데일리 미션, 루트박스 이코노미, 행동변화 유도
+- 유사점: 캐릭터 UI 연동, 데일리 미션 처방, 게이미피케이션 리텐션
+- 기술 스택: Flutter, NestJS, PostgreSQL, Firebase, Spine 2D
+
+▶ Fortune App (2024)
+- 프로젝트 유형: B2C 운세/라이프스타일 앱
+- 핵심 기능: 외부 API 연동 맞춤형 콘텐츠, 소셜 로그인, 포인트/리워드, 3개월 풀패키지 딜리버리
+- 유사점: Flutter 크로스플랫폼, 3개월 MVP 딜리버리, 소셜 로그인, 외부 API 연동
+- 기술 스택: Flutter, Firebase, BLoC, Node.js
+
+---
+
+<사용 기술과 툴>
+
+▶ 개발 기술
+- Frontend: Flutter (Dart) — AOS/iOS 크로스플랫폼
+- Backend: NestJS (TypeScript) + PostgreSQL
+- AI/RAG: OpenAI ChatGPT API + Pinecone (Vector DB) + LangChain
+- 인증: Firebase Auth (카카오/네이버/애플 SSO)
+- 푸시: Firebase Cloud Messaging (FCM)
+- 결제: 포트원 (구 아임포트) 정기결제
+- 날씨: OpenWeatherMap API
+- 관리자: Next.js (React)
+
+▶ 개발 도구 및 인프라
+- 버전 관리: GitHub
+- CI/CD: GitHub Actions
+- 클라우드: AWS (ECS/RDS)
+- 컨테이너: Docker
+
+▶ 커뮤니케이션
+- 일일 진행 공유: Slack 또는 카카오톡
+- 주간 미팅: Zoom / Google Meet
+- 문서 공유: Notion 또는 Google Docs
+- 이슈 트래킹: GitHub Issues 또는 Linear
+
+### 관련 포트폴리오 추천
+1. **Calendar Share** — 캘린더 앱 직접 개발, Flutter 크로스플랫폼, 푸시 알림 7종
+2. **DayStarter** — 캐릭터 시스템, 데일리 미션, 행동변화 게이미피케이션
+3. **Fortune App** — Flutter B2C 앱 3개월 풀패키지 딜리버리
