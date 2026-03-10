@@ -684,8 +684,8 @@
 
           <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
             <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-4 text-center shadow-soft backdrop-blur">
-              <p class="text-2xl font-bold text-sky-700">13+</p>
-              <p class="mt-1 text-xs text-slate-500">완료 프로젝트</p>
+              <p class="text-2xl font-bold text-sky-700">13</p>
+              <p class="mt-1 text-xs text-slate-500">매칭 프로젝트</p>
             </div>
             <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-4 text-center shadow-soft backdrop-blur">
               <p class="text-2xl font-bold text-sky-700">6+</p>
@@ -702,11 +702,11 @@
           </div>
 
           <div class="space-y-4">
-            <!-- Calendar Share -->
+            <!-- Portfolio 1: Calendar Share -->
             <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft backdrop-blur md:p-8">
               <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-sky-100 text-sky-700 border-sky-200">B2C 앱 · 캘린더</div>
               <h3 class="text-lg font-semibold tracking-tight text-slate-900">Calendar Share — 소셜 캘린더 공유 플랫폼</h3>
-              <p class="mt-1 text-sm text-slate-400">소셜 캘린더 · 2025 · 참여율 100%</p>
+              <p class="mt-1 text-xs text-slate-400">소셜 캘린더 · 2025 · 참여율 100%</p>
               <div class="mt-3 doc-content">
                 <h4>프로젝트 개요</h4>
                 <p>캘린더 앱과 소셜 미디어를 하나로 통합한 크로스플랫폼 소셜 캘린더 플랫폼. 소셜 포스트에 캘린더 이벤트를 첨부하고, 좋아요만으로 이벤트를 내 캘린더에 추가하는 소셜 스케줄링 솔루션.</p>
@@ -719,7 +719,11 @@
                   <li>Firebase + Supabase 듀얼 백엔드</li>
                 </ul>
                 <h4>본 프로젝트와의 유사점</h4>
-                <p><strong>캘린더 라이브러리 커스텀</strong>, <strong>7종 푸시 알림 시스템</strong>, <strong>Flutter 크로스플랫폼</strong>, <strong>소셜 로그인</strong> — 반야루틴의 기세 예측 캘린더와 데일리 푸시 알림 구현에 직접 적용 가능한 경험입니다.</p>
+                <ul>
+                  <li><strong>캘린더 라이브러리 커스텀</strong> — TableCalendar 커스텀 경험이 기세 예측 캘린더 UI 구현에 직접 적용</li>
+                  <li><strong>7종 푸시 알림</strong> — FCM 푸시 + 딥링크 경험이 데일리 알림 및 리마인드 구현에 활용</li>
+                  <li><strong>소셜 로그인</strong> — Firebase Auth 기반 소셜 로그인 경험이 카카오/네이버/애플 SSO에 적용</li>
+                </ul>
                 <h4>기술 스택</h4>
                 <div class="flex flex-wrap gap-1.5 not-prose">
                   <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Flutter 3.27</span>
@@ -728,30 +732,32 @@
                   <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Supabase</span>
                   <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">FCM</span>
                   <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">TableCalendar</span>
-                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Provider</span>
                 </div>
-                <p class="mt-2 text-sm text-slate-400">17,628 LOC · 45+ 화면 · 7종 알림 · Android + iOS</p>
+                <p class="mt-2 text-xs text-slate-400">17,628 LOC · 45+ 화면 · 7종 알림 · Android + iOS</p>
               </div>
             </div>
 
-            <!-- DayStarter -->
+            <!-- Portfolio 2: DayStarter -->
             <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft backdrop-blur md:p-8">
               <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-sky-100 text-sky-700 border-sky-200">B2C 앱 · 게이미피케이션</div>
               <h3 class="text-lg font-semibold tracking-tight text-slate-900">DayStarter — 게이미피케이션 수면 보상 알람 앱</h3>
-              <p class="mt-1 text-sm text-slate-400">행동변화 · 자체 프로덕트 · 2022~2023 · 참여율 100%</p>
+              <p class="mt-1 text-xs text-slate-400">행동변화 · 자체 프로덕트 · 2022~2023 (13개월)</p>
               <div class="mt-3 doc-content">
                 <h4>프로젝트 개요</h4>
-                <p>센서 기반 수면 인증 + 게이미피케이션 + 토큰 이코노미를 결합한 알람 앱. 캐릭터(Deimo) 시스템, 루트박스, 퀘스트, 리그 랭킹 등 모바일 게임 수준의 리텐션 메커니즘을 구현한 행동 변화 유도 앱.</p>
+                <p>센서 기반 수면 인증 + 게이미피케이션 + 토큰 이코노미를 결합한 알람 앱. 캐릭터(Deimo) 시스템, 루트박스, 퀘스트, 리그 랭킹 등 모바일 게임 수준의 리텐션 메커니즘 구현.</p>
                 <h4>핵심 기능</h4>
                 <ul>
                   <li>Spine 2D 스켈레톤 애니메이션 캐릭터 시스템 (36+ 스프라이트)</li>
                   <li>데일리 미션 + 퀘스트 + 7단계 루트박스 이코노미</li>
                   <li>센서 기반 수면 검증 (ML Kit, 조도, 배터리)</li>
                   <li>행동 변화 게이미피케이션 (듀얼 토큰, 리그 랭킹)</li>
-                  <li>6개 언어 스토어 리스팅</li>
                 </ul>
                 <h4>본 프로젝트와의 유사점</h4>
-                <p><strong>캐릭터 시스템</strong>(라토/호담 ↔ Deimo), <strong>데일리 미션 + 행동 변화 유도</strong>, <strong>푸시 알림</strong>, <strong>게이미피케이션 리텐션</strong> — 반야루틴의 캐릭터 UI 연동, 데일리 미션 처방, 미션 달성 리액션 구현에 직접 적용 가능한 경험입니다.</p>
+                <ul>
+                  <li><strong>캐릭터 시스템</strong> — Spine 2D 캐릭터(Deimo) 통합 경험이 라토/호담 캐릭터 UI 연동에 직접 적용</li>
+                  <li><strong>데일리 미션 + 행동 변화</strong> — 데일리 미션/퀘스트 기반 행동 변화 유도 경험이 기세 관리 미션 처방에 활용</li>
+                  <li><strong>게이미피케이션 리텐션</strong> — 스탬프, 리액션, 보상 메커니즘이 미션 달성 리액션에 적용</li>
+                </ul>
                 <h4>기술 스택</h4>
                 <div class="flex flex-wrap gap-1.5 not-prose">
                   <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Flutter</span>
@@ -760,40 +766,335 @@
                   <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">PostgreSQL</span>
                   <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Firebase</span>
                   <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Spine 2D</span>
-                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">ML Kit</span>
                 </div>
-                <p class="mt-2 text-sm text-slate-400">48 화면 · 37 DB 모델 · ~50K LOC · 3 플랫폼</p>
+                <p class="mt-2 text-xs text-slate-400">48 화면 · 37 DB 모델 · ~50K LOC · 3 플랫폼</p>
               </div>
             </div>
 
-            <!-- Fortune App -->
+            <!-- Portfolio 3: Fortune App -->
             <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft backdrop-blur md:p-8">
-              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-sky-100 text-sky-700 border-sky-200">B2C 앱 · 라이프스타일</div>
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-sky-100 text-sky-700 border-sky-200">B2C 앱 · 운세</div>
               <h3 class="text-lg font-semibold tracking-tight text-slate-900">Fortune App — 사주 기반 맞춤형 운세 앱</h3>
-              <p class="mt-1 text-sm text-slate-400">엔터테인먼트 · 2024.07~2024.09 · 참여율 100%</p>
+              <p class="mt-1 text-xs text-slate-400">엔터테인먼트 · 2024.07~2024.09 (3개월)</p>
               <div class="mt-3 doc-content">
                 <h4>프로젝트 개요</h4>
-                <p>사주(四柱) 기반 맞춤형 운세, 행운의 번호 추천, 궁합 분석을 제공하는 모바일 앱. 기획부터 스토어 출시까지 3개월 풀패키지 딜리버리.</p>
+                <p>사주(四柱) 기반 맞춤형 운세, 행운의 번호, 궁합 분석 모바일 앱. 기획부터 스토어 출시까지 3개월 풀패키지 딜리버리.</p>
                 <h4>핵심 기능</h4>
                 <ul>
                   <li>사주 분석 엔진 연동 (외부 API)</li>
                   <li>포인트 & 데일리 체크인 리워드 시스템</li>
                   <li>Google / Apple 소셜 로그인</li>
-                  <li>자체 광고 SDK (flutter_ads) 개발</li>
                   <li>Clean Architecture + BLoC 패턴</li>
                 </ul>
                 <h4>본 프로젝트와의 유사점</h4>
-                <p><strong>Flutter B2C 앱 3개월 풀패키지 딜리버리</strong>, <strong>소셜 로그인</strong>, <strong>외부 API 연동 기반 맞춤형 콘텐츠 생성</strong>, <strong>데일리 체크인/리워드</strong> — 동일한 일정(90일) 내 기획~스토어 출시 완수 실적입니다.</p>
+                <ul>
+                  <li><strong>Flutter B2C 앱 3개월 딜리버리</strong> — 동일한 90일 일정 내 기획~스토어 출시 완수 실적</li>
+                  <li><strong>외부 API 맞춤 콘텐츠</strong> — 외부 API 결과를 사용자 맞춤형 콘텐츠로 가공하는 경험이 ChatGPT API 연동에 적용</li>
+                  <li><strong>리워드/게이미피케이션</strong> — 포인트, 데일리 체크인 시스템이 기세 관리 리텐션에 활용</li>
+                </ul>
                 <h4>기술 스택</h4>
                 <div class="flex flex-wrap gap-1.5 not-prose">
-                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Flutter 3.22</span>
-                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Dart</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Flutter</span>
                   <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Firebase</span>
-                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">BLoC/Cubit</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">BLoC</span>
                   <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Node.js</span>
-                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Retrofit+Dio</span>
                 </div>
-                <p class="mt-2 text-sm text-slate-400">305 Dart 파일 · ~16K LOC · 12+ 화면 · 3개월 딜리버리</p>
+                <p class="mt-2 text-xs text-slate-400">305 Dart 파일 · ~16K LOC · 12+ 화면 · 3개월 딜리버리</p>
+              </div>
+            </div>
+
+            <!-- Portfolio 4: AI Agent -->
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft backdrop-blur md:p-8">
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-amber-100 text-amber-700 border-amber-200">AI · 자동화</div>
+              <h3 class="text-lg font-semibold tracking-tight text-slate-900">AI-Native Development Framework</h3>
+              <p class="mt-1 text-xs text-slate-400">AI 에이전트 · 자동화 · 2026.01~ (진행 중)</p>
+              <div class="mt-3 doc-content">
+                <h4>프로젝트 개요</h4>
+                <p>4종 AI 에이전트를 통합 오케스트레이션하는 개발 프레임워크. 134+ 스킬 모듈, 12개 품질 게이트, Document Intelligence 포함. RAG 기반 지식 검색 시스템 구축.</p>
+                <h4>핵심 기능</h4>
+                <ul>
+                  <li>멀티 AI 오케스트레이션 (4종 AI 통합)</li>
+                  <li>LLM API 연동 및 프롬프트 엔지니어링 (134+ 스킬)</li>
+                  <li>벡터 검색 기반 RAG 파이프라인</li>
+                </ul>
+                <h4>본 프로젝트와의 유사점</h4>
+                <ul>
+                  <li><strong>RAG 파이프라인</strong> — 벡터 검색 + 생성형 AI 기반 RAG 시스템 설계 경험이 멘탈 코칭 RAG에 직접 적용</li>
+                  <li><strong>LLM API 연동</strong> — ChatGPT/Claude API 프롬프트 설계 경험이 기세 예측 및 AI 코칭에 활용</li>
+                </ul>
+                <h4>기술 스택</h4>
+                <div class="flex flex-wrap gap-1.5 not-prose">
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">TypeScript</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">React 19</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Claude SDK</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">MCP</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">TailwindCSS</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Portfolio 5: Harmony Link -->
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft backdrop-blur md:p-8">
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-sky-100 text-sky-700 border-sky-200">B2B SaaS · 헬스케어</div>
+              <h3 class="text-lg font-semibold tracking-tight text-slate-900">Harmony Link — 시니어 주간보호 관리 플랫폼</h3>
+              <p class="mt-1 text-xs text-slate-400">헬스케어 · 시니어 케어 · 2025 (약 6개월)</p>
+              <div class="mt-3 doc-content">
+                <h4>프로젝트 개요</h4>
+                <p>노인 주간보호센터의 돌봄 기록, 투약 관리, 보호자 소통, AI 건강분석을 통합한 멀티플랫폼 관리 시스템. 133,000+ LOC, 140+ API, Flutter 크로스플랫폼.</p>
+                <h4>핵심 기능</h4>
+                <ul>
+                  <li>AI 건강분석 (OpenAI 연동) — 건강 트렌드 분석 및 이상 징후 감지</li>
+                  <li>Flutter 크로스플랫폼 (6개 플랫폼 지원)</li>
+                  <li>관리자 웹 패널 (Next.js, RBAC)</li>
+                </ul>
+                <h4>본 프로젝트와의 유사점</h4>
+                <ul>
+                  <li><strong>AI 건강/웰니스 분석</strong> — OpenAI 연동 건강 데이터 AI 분석 경험이 멘탈 케어 AI 코칭에 직접 적용</li>
+                  <li><strong>Flutter + NestJS</strong> — 동일한 기술 스택(Flutter + NestJS + Firebase) 경험</li>
+                  <li><strong>크로스플랫폼 앱</strong> — AOS/iOS 크로스플랫폼 앱 구축 경험</li>
+                </ul>
+                <h4>기술 스택</h4>
+                <div class="flex flex-wrap gap-1.5 not-prose">
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Flutter</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">NestJS</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Next.js</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">OpenAI API</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">AWS CDK</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Portfolio 6: Series-B -->
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft backdrop-blur md:p-8">
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-sky-100 text-sky-700 border-sky-200">핀테크 · AI</div>
+              <h3 class="text-lg font-semibold tracking-tight text-slate-900">Series B — 투자조합 관리 올인원 플랫폼</h3>
+              <p class="mt-1 text-xs text-slate-400">B2B SaaS · 핀테크 · 2023.11~2024.12 (14개월)</p>
+              <div class="mt-3 doc-content">
+                <h4>프로젝트 개요</h4>
+                <p>벤처캐피탈 펀드 라이프사이클 관리 올인원 SaaS. ChatGPT API 연동 AI 보고서 자동 생성. 14개월간 1,652 PR 달성.</p>
+                <h4>핵심 기능</h4>
+                <ul>
+                  <li>ChatGPT API 연동 AI 보고서 생성</li>
+                  <li>구독 과금 체계 및 대시보드</li>
+                  <li>KYC 본인인증 통합</li>
+                </ul>
+                <h4>본 프로젝트와의 유사점</h4>
+                <ul>
+                  <li><strong>AI API 연동</strong> — ChatGPT API 프롬프트 설계·비용 최적화 경험이 기세 예측 및 AI 코칭에 적용</li>
+                  <li><strong>구독 결제 시스템</strong> — SaaS 과금 체계 설계 경험이 월 4,900원 구독 결제에 활용</li>
+                  <li><strong>대시보드/리포트</strong> — 데이터 시각화 대시보드 경험이 월간 리포트 UI에 적용</li>
+                </ul>
+                <h4>기술 스택</h4>
+                <div class="flex flex-wrap gap-1.5 not-prose">
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Next.js</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">NestJS</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">ChatGPT API</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">MySQL</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">AWS</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Portfolio 7: EZ-Approve -->
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft backdrop-blur md:p-8">
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-sky-100 text-sky-700 border-sky-200">B2B SaaS · 전자결재</div>
+              <h3 class="text-lg font-semibold tracking-tight text-slate-900">EZ-Approve — 전자결재 SaaS 플랫폼</h3>
+              <p class="mt-1 text-xs text-slate-400">B2B SaaS · 전자결재 · 2026.01~2026.03 (9주)</p>
+              <div class="mt-3 doc-content">
+                <h4>프로젝트 개요</h4>
+                <p>한국 기업의 결재·문서 프로세스를 디지털화하는 업무 자동화 SaaS. 504 PR / 9주, 34 엔티티, 120-150 API.</p>
+                <h4>핵심 기능</h4>
+                <ul>
+                  <li>관리자 대시보드 — 7종 사용자 역할별 RBAC</li>
+                  <li>실시간 자동 저장 및 Yjs 공동편집</li>
+                  <li>NestJS + Next.js 풀스택</li>
+                </ul>
+                <h4>본 프로젝트와의 유사점</h4>
+                <ul>
+                  <li><strong>관리자 페이지</strong> — RBAC 기반 관리자 대시보드 구축 경험이 반야루틴 관리자 페이지에 적용</li>
+                  <li><strong>NestJS 백엔드</strong> — NestJS 기반 대규모 API 서버 구축 경험이 백엔드 설계에 활용</li>
+                </ul>
+                <h4>기술 스택</h4>
+                <div class="flex flex-wrap gap-1.5 not-prose">
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">NestJS</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Next.js</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">TypeScript</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Lexical+Yjs</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Docker</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Portfolio 8: Pilates App -->
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft backdrop-blur md:p-8">
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-sky-100 text-sky-700 border-sky-200">B2C 앱 · 피트니스</div>
+              <h3 class="text-lg font-semibold tracking-tight text-slate-900">Pilates App — 필라테스 프랜차이즈 관리 플랫폼</h3>
+              <p class="mt-1 text-xs text-slate-400">CRM · O2O · 2019.09~2019.12 (4개월)</p>
+              <div class="mt-3 doc-content">
+                <h4>프로젝트 개요</h4>
+                <p>필라테스 센터의 예약, 결제, 회원관리, 매출분석을 통합하는 올인원 관리 플랫폼. 4개월 3-플랫폼 동시 출시.</p>
+                <h4>핵심 기능</h4>
+                <ul>
+                  <li>예약 시스템 및 수강권 결제</li>
+                  <li>건강/피트니스 관리 CRM</li>
+                  <li>푸시 알림 (예약 확정, 리마인드)</li>
+                </ul>
+                <h4>본 프로젝트와의 유사점</h4>
+                <ul>
+                  <li><strong>예약/결제 시스템</strong> — 수강권 결제 시스템 경험이 포트원 구독 결제 연동에 적용</li>
+                  <li><strong>건강/웰니스 도메인</strong> — 피트니스 건강 관리 CRM 경험이 멘탈 케어 서비스 설계에 활용</li>
+                  <li><strong>O2O 푸시 알림</strong> — 예약 리마인드 푸시 경험이 데일리 기세 알림에 적용</li>
+                </ul>
+                <h4>기술 스택</h4>
+                <div class="flex flex-wrap gap-1.5 not-prose">
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">React Native</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Node.js</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">React</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Portfolio 9: Connectin -->
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft backdrop-blur md:p-8">
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-sky-100 text-sky-700 border-sky-200">B2B · 네트워킹</div>
+              <h3 class="text-lg font-semibold tracking-tight text-slate-900">Connectin — 디지털 명함 & 네트워킹 플랫폼</h3>
+              <p class="mt-1 text-xs text-slate-400">B2B 플랫폼 · 2025.05~2025.08 (3개월)</p>
+              <div class="mt-3 doc-content">
+                <h4>프로젝트 개요</h4>
+                <p>OCR 스캐닝, E2E 암호화 메시징, BLE/GPS 근거리 탐색을 결합한 디지털 명함 & 네트워킹 플랫폼. Flutter + Express, 12개 마이크로서비스.</p>
+                <h4>핵심 기능</h4>
+                <ul>
+                  <li>Flutter 크로스플랫폼 (iOS, Android, Web)</li>
+                  <li>매칭 알고리즘 및 사용자 프로필</li>
+                  <li>마이크로서비스 기반 확장 아키텍처</li>
+                </ul>
+                <h4>본 프로젝트와의 유사점</h4>
+                <ul>
+                  <li><strong>Flutter 크로스플랫폼</strong> — Flutter + Express 기반 크로스플랫폼 앱 경험이 AOS/iOS 앱에 활용</li>
+                  <li><strong>마이크로서비스</strong> — 독립적 서비스 분리 경험이 모듈러 아키텍처 설계에 적용</li>
+                </ul>
+                <h4>기술 스택</h4>
+                <div class="flex flex-wrap gap-1.5 not-prose">
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Flutter</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Express</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Next.js</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">PostgreSQL</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Portfolio 10: Life3 -->
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft backdrop-blur md:p-8">
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-amber-100 text-amber-700 border-amber-200">Web3 · GameFi</div>
+              <h3 class="text-lg font-semibold tracking-tight text-slate-900">Life3 — Web3 dApp 마켓플레이스</h3>
+              <p class="mt-1 text-xs text-slate-400">Web3 · 게이미피케이션 · 2023.12~2024.07 (8개월)</p>
+              <div class="mt-3 doc-content">
+                <h4>프로젝트 개요</h4>
+                <p>NFT 마켓플레이스, 게이미피케이션 리워드를 통합한 Web3 dApp. GPT-4o AI 일일 운세 콘텐츠 자동 생성, 4개 마이크로서비스.</p>
+                <h4>핵심 기능</h4>
+                <ul>
+                  <li>GPT-4o AI 콘텐츠 자동 생성</li>
+                  <li>게이미피케이션 리워드 (체크인, 랭킹)</li>
+                  <li>토큰 이코노미</li>
+                </ul>
+                <h4>본 프로젝트와의 유사점</h4>
+                <ul>
+                  <li><strong>AI 콘텐츠 자동 생성</strong> — GPT-4o 연동 매일 새로운 콘텐츠 자동 생성 경험이 기세 예측 텍스트 생성에 활용</li>
+                  <li><strong>게이미피케이션</strong> — 체크인, 리워드, 랭킹 시스템이 미션 달성 보상에 적용</li>
+                </ul>
+                <h4>기술 스택</h4>
+                <div class="flex flex-wrap gap-1.5 not-prose">
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">React</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Next.js</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Express</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">OpenAI GPT-4o</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Portfolio 11: Casual Game -->
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft backdrop-blur md:p-8">
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-amber-100 text-amber-700 border-amber-200">게임 · 텔레그램</div>
+              <h3 class="text-lg font-semibold tracking-tight text-slate-900">Casual Game — 텔레그램 미니앱 게임</h3>
+              <p class="mt-1 text-xs text-slate-400">캐주얼 게임 · Web3 · 약 7개월</p>
+              <div class="mt-3 doc-content">
+                <h4>프로젝트 개요</h4>
+                <p>텔레그램 WebApp 기반 캐주얼 아케이드 게임 + 레퍼럴 시스템 + 지갑 통합. NestJS 백엔드, Docker 멀티 서비스.</p>
+                <h4>핵심 기능</h4>
+                <ul>
+                  <li>인터랙티브 게임 UI (Phaser.js)</li>
+                  <li>아이템 스토어 & 퀘스트 시스템</li>
+                  <li>일간 통계 자동 리포트</li>
+                </ul>
+                <h4>본 프로젝트와의 유사점</h4>
+                <ul>
+                  <li><strong>인터랙티브 UI</strong> — 게임 기반 인터랙티브 UI 경험이 캐릭터 리액션 애니메이션에 활용</li>
+                  <li><strong>NestJS + Docker</strong> — NestJS 백엔드 + Docker 인프라 경험이 서버 구축에 적용</li>
+                </ul>
+                <h4>기술 스택</h4>
+                <div class="flex flex-wrap gap-1.5 not-prose">
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Phaser.js</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">NestJS</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">ethers.js</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Docker</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Portfolio 12: P2P Funding -->
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft backdrop-blur md:p-8">
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-sky-100 text-sky-700 border-sky-200">핀테크 · P2P</div>
+              <h3 class="text-lg font-semibold tracking-tight text-slate-900">P2P Funding — P2P 크라우드 펀딩 플랫폼</h3>
+              <p class="mt-1 text-xs text-slate-400">핀테크 · 크라우드펀딩 · 2019.12~2020.01</p>
+              <div class="mt-3 doc-content">
+                <h4>프로젝트 개요</h4>
+                <p>소액 투자자들이 다양한 대출 상품에 조각투자할 수 있는 P2P 렌딩 마켓플레이스. 80+ 엔티티, 330+ API, KYC 통합.</p>
+                <h4>핵심 기능</h4>
+                <ul>
+                  <li>KYC 본인인증 (NICE 4개 프로토콜)</li>
+                  <li>가상계좌 결제 자동화</li>
+                  <li>관리자 대시보드</li>
+                </ul>
+                <h4>본 프로젝트와의 유사점</h4>
+                <ul>
+                  <li><strong>결제 시스템</strong> — 가상계좌 결제 자동화 경험이 포트원 정기결제 연동에 적용</li>
+                  <li><strong>KYC/인증</strong> — NICE 본인인증 통합 경험이 소셜 로그인 + 인증 흐름에 활용</li>
+                </ul>
+                <h4>기술 스택</h4>
+                <div class="flex flex-wrap gap-1.5 not-prose">
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Django</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Python</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">MySQL</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Portfolio 13: NFT-DeFi -->
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft backdrop-blur md:p-8">
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-amber-100 text-amber-700 border-amber-200">Web3 · GameFi</div>
+              <h3 class="text-lg font-semibold tracking-tight text-slate-900">NFT-DeFi — NFT 메타버스 DeFi 게임 플랫폼</h3>
+              <p class="mt-1 text-xs text-slate-400">블록체인 · GameFi · 2022.01~2022.03 (3개월)</p>
+              <div class="mt-3 doc-content">
+                <h4>프로젝트 개요</h4>
+                <p>NFT 캐릭터 수집, 게임, DeFi를 통합한 Web3 GameFi 플랫폼. 이중 경제 시스템(온체인/오프체인), 3개월 풀스택 구축.</p>
+                <h4>핵심 기능</h4>
+                <ul>
+                  <li>NFT 캐릭터 가챠 시스템</li>
+                  <li>이중 경제 시스템 (포인트/토큰)</li>
+                  <li>반응형 웹 (PC + 모바일)</li>
+                </ul>
+                <h4>본 프로젝트와의 유사점</h4>
+                <ul>
+                  <li><strong>포인트/보상 이코노미</strong> — 이중 경제 시스템 설계 경험이 무료/유료 권한 분리 및 리워드 설계에 활용</li>
+                  <li><strong>3개월 풀스택 딜리버리</strong> — 디자인~개발 End-to-End 3개월 완수 실적</li>
+                </ul>
+                <h4>기술 스택</h4>
+                <div class="flex flex-wrap gap-1.5 not-prose">
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">React</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Solidity</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Klaytn</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Node.js</span>
+                </div>
               </div>
             </div>
           </div>
