@@ -1,0 +1,857 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI(RAG) 기반 멘탈 케어 캘린더 앱 개발 — 프로젝트 제안서" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['SUIT Variable', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace']
+          },
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              600: '#0284c7',
+              700: '#0369a1'
+            }
+          },
+          boxShadow: {
+            soft: '0 10px 30px -18px rgba(15, 23, 42, 0.35)'
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    :root { color-scheme: light; font-size: 16px; }
+    body {
+      font-family: 'SUIT Variable', sans-serif;
+      font-size: 1rem;
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(14, 165, 233, 0.08), transparent 42%),
+        radial-gradient(circle at 88% 82%, rgba(2, 132, 199, 0.06), transparent 48%);
+    }
+
+    .doc-content h1, .doc-content h2, .doc-content h3, .doc-content h4 {
+      color: rgb(15 23 42); font-weight: 700; letter-spacing: -0.01em;
+      line-height: 1.3; margin-top: 1.6em; margin-bottom: 0.7em;
+    }
+    .doc-content h1 { font-size: 2rem; margin-top: 0.2em; }
+    .doc-content h2 { font-size: 1.4rem; }
+    .doc-content h3 { font-size: 1.15rem; }
+    .doc-content p, .doc-content li {
+      color: rgb(51 65 85); line-height: 1.8; font-size: 1rem;
+    }
+    .doc-content p, .doc-content ul, .doc-content ol,
+    .doc-content table, .doc-content pre, .doc-content blockquote {
+      margin-bottom: 1rem;
+    }
+    .doc-content ul, .doc-content ol { padding-left: 1.2rem; }
+    .doc-content ul { list-style: disc; }
+    .doc-content ol { list-style: decimal; }
+    .doc-content table {
+      width: 100%; border-collapse: collapse;
+      border: 1px solid rgb(226 232 240); border-radius: 0.75rem;
+      overflow: hidden; font-size: 1rem;
+    }
+    .doc-content th, .doc-content td {
+      border: 1px solid rgb(226 232 240); padding: 0.7rem 0.8rem;
+      text-align: left; vertical-align: top;
+    }
+    .doc-content th {
+      background: rgb(248 250 252); color: rgb(30 41 59); font-weight: 600;
+    }
+    .doc-content pre, .doc-content code {
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+    }
+    .doc-content pre {
+      background: rgb(15 23 42); color: rgb(226 232 240);
+      padding: 1rem; border-radius: 0.75rem; overflow-x: auto;
+      font-size: 1rem; line-height: 1.65;
+    }
+    .doc-content p code, .doc-content li code,
+    .doc-content td code, .doc-content th code {
+      background: rgb(241 245 249); color: rgb(15 23 42);
+      border: 1px solid rgb(226 232 240); border-radius: 0.4rem;
+      padding: 0.08rem 0.4rem; font-size: 1em;
+    }
+    .doc-content blockquote {
+      border-left: 3px solid rgb(14 165 233); padding-left: 0.85rem;
+      color: rgb(71 85 105); background: rgb(240 249 255);
+      border-radius: 0.5rem; padding-top: 0.55rem; padding-bottom: 0.55rem;
+    }
+
+    .text-xs { font-size: 1rem !important; }
+
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: ''; position: absolute; left: 0.6rem; top: 0.25rem; bottom: 0.25rem;
+      width: 2px; background: rgb(186 230 253);
+    }
+    .timeline-item { position: relative; margin-bottom: 1.75rem; }
+    .timeline-item::before {
+      content: ''; position: absolute; left: -1.65rem; top: 0.35rem;
+      width: 0.75rem; height: 0.75rem; border-radius: 50%;
+      background: rgb(2 132 199); border: 3px solid rgb(224 242 254);
+    }
+
+    .page-section { display: none; }
+    .page-section.active { display: block; }
+
+    #sidebar-backdrop { display: none; }
+    #sidebar-backdrop.open { display: block; }
+    @media (max-width: 1023px) {
+      #sidebar { transform: translateX(-100%); transition: transform 0.2s ease; position: fixed; top: 0; left: 0; z-index: 40; height: 100vh; width: 80vw; max-width: 320px; }
+      #sidebar.open { transform: translateX(0); }
+    }
+  </style>
+  <title>AI(RAG) 기반 멘탈 케어 캘린더 앱 개발 — 프로젝트 제안서</title>
+</head>
+<body class="text-slate-800 font-sans antialiased">
+  <div class="mx-auto max-w-7xl px-4 py-6 md:px-8 md:py-10">
+
+    <!-- Header -->
+    <header class="mb-6 rounded-2xl border border-slate-200/70 bg-white/85 px-5 py-3 shadow-soft backdrop-blur">
+      <div class="flex flex-wrap items-center gap-3">
+        <button id="sidebar-toggle" class="lg:hidden inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm font-medium text-slate-700 hover:border-sky-300 hover:text-sky-700">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          메뉴
+        </button>
+        <a href="#home" class="inline-flex items-center shrink-0">
+          <img src="blueverse_logo_h.png" alt="Blue Verse" class="h-6" />
+        </a>
+        <div class="hidden sm:block ml-auto text-right">
+          <p class="text-sm font-semibold tracking-[0.04em] text-sky-700/90">AI(RAG) 기반 멘탈 케어 캘린더 앱 개발</p>
+          <p class="text-xs text-slate-400">프로젝트 제안서</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+
+      <!-- Sidebar -->
+      <div id="sidebar-backdrop" class="fixed inset-0 bg-black/30 z-30 lg:hidden" onclick="closeSidebar()"></div>
+      <aside id="sidebar" class="rounded-2xl border border-slate-200/70 bg-white/90 p-4 shadow-soft backdrop-blur lg:sticky lg:top-6 lg:h-[calc(100vh-4rem)] lg:overflow-auto">
+        <nav id="nav" class="space-y-1">
+          <a href="#home" data-page="home" class="nav-link block rounded-xl border px-3 py-2 text-sm border-sky-200 bg-sky-50 font-medium text-sky-700">홈</a>
+          <div class="my-3 border-t border-slate-200"></div>
+          <p class="mb-2 mt-1 px-1 text-sm font-semibold tracking-[0.14em] text-slate-400">제안서</p>
+          <a href="#overview" data-page="overview" class="nav-link block rounded-xl border border-transparent px-3 py-2 text-sm text-slate-600 hover:border-slate-200 hover:bg-slate-50 hover:text-slate-900">프로젝트 소개</a>
+          <a href="#estimate" data-page="estimate" class="nav-link block rounded-xl border border-transparent px-3 py-2 text-sm text-slate-600 hover:border-slate-200 hover:bg-slate-50 hover:text-slate-900">견적서</a>
+          <a href="#manday" data-page="manday" class="nav-link block rounded-xl border border-transparent px-3 py-2 text-sm text-slate-600 hover:border-slate-200 hover:bg-slate-50 hover:text-slate-900">공수계산서</a>
+          <a href="#prd" data-page="prd" class="nav-link block rounded-xl border border-transparent px-3 py-2 text-sm text-slate-600 hover:border-slate-200 hover:bg-slate-50 hover:text-slate-900">PRD</a>
+          <div class="my-3 border-t border-slate-200"></div>
+          <p class="mb-2 mt-1 px-1 text-sm font-semibold tracking-[0.14em] text-slate-400">일정 & 경험</p>
+          <a href="#timeline" data-page="timeline" class="nav-link block rounded-xl border border-transparent px-3 py-2 text-sm text-slate-600 hover:border-slate-200 hover:bg-slate-50 hover:text-slate-900">일정 제안</a>
+          <a href="#portfolio" data-page="portfolio" class="nav-link block rounded-xl border border-transparent px-3 py-2 text-sm text-slate-600 hover:border-slate-200 hover:bg-slate-50 hover:text-slate-900">유사 프로젝트 경험</a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="min-w-0">
+
+        <!-- PAGE: Home -->
+        <div id="page-home" class="page-section active space-y-6">
+          <div class="rounded-2xl border border-slate-200/70 bg-white/95 p-6 shadow-soft backdrop-blur md:p-8">
+            <p class="mb-2 text-xs font-semibold tracking-[0.2em] text-sky-700/80">프로젝트 제안서</p>
+            <h1 class="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">AI(RAG) 기반 멘탈 케어 캘린더 앱 개발</h1>
+            <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600 md:text-base">3040 세대의 감정 자본을 관리하고 매일의 기세를 예측하는 모바일 앱 '반야루틴' MVP를 구축합니다. 생체 심리 데이터와 생성형 AI(RAG)를 결합하여, 맞춤형 오프라인 행동 미션 처방과 일상의 기세 관리를 제공하는 AOS/iOS 크로스플랫폼 모바일 서비스입니다.</p>
+            <div class="mt-4 flex flex-wrap items-center gap-2">
+              <span class="inline-flex rounded-full border border-sky-200 bg-sky-100 px-2.5 py-1 text-sm font-semibold tracking-[0.12em] text-sky-700">22,500,000원</span>
+              <span class="inline-flex rounded-full border border-sky-200 bg-sky-100 px-2.5 py-1 text-sm font-semibold tracking-[0.12em] text-sky-700">90일</span>
+              <span class="inline-flex rounded-full border border-amber-200 bg-amber-100 px-2.5 py-1 text-sm font-semibold tracking-[0.12em] text-amber-700">모바일 앱 · AI(RAG) · 구독 서비스</span>
+              <a href="https://www.wishket.com/project/153264/" target="_blank" rel="noopener noreferrer"
+                 class="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-sm font-medium text-slate-500 transition hover:border-sky-300 hover:text-sky-700">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                원본 공고
+              </a>
+              <a href="https://www.wishket.com/partners/p/blueverse1/portfolio/" target="_blank" rel="noopener noreferrer"
+                 class="inline-flex items-center gap-1 rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 text-sm font-medium text-sky-700 transition hover:border-sky-400 hover:bg-sky-100">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                위시켓 포트폴리오
+              </a>
+            </div>
+          </div>
+
+          <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <a href="#overview" class="group rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-sky-200 hover:bg-white">
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-sky-100 text-sky-700 border-sky-200">소개</div>
+              <h2 class="text-lg font-semibold tracking-tight text-slate-900 group-hover:text-sky-700">프로젝트 소개</h2>
+              <p class="mt-2 text-sm leading-7 text-slate-600">프로젝트 분석, 핵심 요구사항 정리, 기술 스택 제안</p>
+            </a>
+            <a href="#estimate" class="group rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-sky-200 hover:bg-white">
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-sky-100 text-sky-700 border-sky-200">비용</div>
+              <h2 class="text-lg font-semibold tracking-tight text-slate-900 group-hover:text-sky-700">견적서</h2>
+              <p class="mt-2 text-sm leading-7 text-slate-600">항목별 비용 산출 근거 및 상세 견적</p>
+            </a>
+            <a href="#manday" class="group rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-sky-200 hover:bg-white">
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-sky-100 text-sky-700 border-sky-200">공수</div>
+              <h2 class="text-lg font-semibold tracking-tight text-slate-900 group-hover:text-sky-700">공수계산서</h2>
+              <p class="mt-2 text-sm leading-7 text-slate-600">기능별 개발 공수(man-day) 산출 내역</p>
+            </a>
+            <a href="#prd" class="group rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-sky-200 hover:bg-white">
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-amber-100 text-amber-700 border-amber-200">기획</div>
+              <h2 class="text-lg font-semibold tracking-tight text-slate-900 group-hover:text-sky-700">PRD</h2>
+              <p class="mt-2 text-sm leading-7 text-slate-600">기능 요구사항 정의서, 사용자 스토리, 기술 제약</p>
+            </a>
+            <a href="#timeline" class="group rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-sky-200 hover:bg-white">
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-amber-100 text-amber-700 border-amber-200">일정</div>
+              <h2 class="text-lg font-semibold tracking-tight text-slate-900 group-hover:text-sky-700">일정 제안</h2>
+              <p class="mt-2 text-sm leading-7 text-slate-600">단계별 마일스톤 및 산출물 일정표</p>
+            </a>
+            <a href="#portfolio" class="group rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-sky-200 hover:bg-white">
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-amber-100 text-amber-700 border-amber-200">경험</div>
+              <h2 class="text-lg font-semibold tracking-tight text-slate-900 group-hover:text-sky-700">유사 프로젝트 경험</h2>
+              <p class="mt-2 text-sm leading-7 text-slate-600">캘린더 앱, 게이미피케이션, AI 연동 개발 경험</p>
+            </a>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-4 text-center shadow-soft backdrop-blur">
+              <p class="text-2xl font-bold text-sky-700">13+</p>
+              <p class="mt-1 text-xs text-slate-500">완료 프로젝트</p>
+            </div>
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-4 text-center shadow-soft backdrop-blur">
+              <p class="text-2xl font-bold text-sky-700">6+</p>
+              <p class="mt-1 text-xs text-slate-500">크로스플랫폼 앱</p>
+            </div>
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-4 text-center shadow-soft backdrop-blur">
+              <p class="text-2xl font-bold text-sky-700">AI/RAG</p>
+              <p class="mt-1 text-xs text-slate-500">기술 경험 보유</p>
+            </div>
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-4 text-center shadow-soft backdrop-blur">
+              <p class="text-2xl font-bold text-sky-700">90일</p>
+              <p class="mt-1 text-xs text-slate-500">MVP 납품</p>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-sky-200/70 bg-gradient-to-br from-sky-50 to-brand-50 p-6 text-center shadow-soft md:p-10">
+            <h2 class="text-xl font-bold tracking-tight text-slate-900 md:text-2xl">함께 만들어 가겠습니다</h2>
+            <p class="mx-auto mt-3 max-w-lg text-sm leading-7 text-slate-600">각 메뉴를 클릭하시면 상세 내용을 확인하실 수 있습니다.</p>
+          </div>
+        </div>
+
+        <!-- PAGE: 프로젝트 소개 -->
+        <div id="page-overview" class="page-section space-y-6">
+          <div class="rounded-2xl border border-slate-200/70 bg-white/95 p-5 shadow-soft backdrop-blur md:p-8">
+            <article class="doc-content">
+              <h1>프로젝트 소개</h1>
+              <blockquote>3040 세대의 감정 자본 관리와 기세 예측을 위한 AI(RAG) 기반 모바일 앱 '반야루틴' MVP를 구축합니다. 캘린더 + AI 코칭 + 구독 모델을 결합한 크로스플랫폼 서비스입니다.</blockquote>
+
+              <h2>프로젝트 개요</h2>
+              <table>
+                <tr><th>항목</th><th>내용</th></tr>
+                <tr><td>프로젝트명</td><td><a href="https://www.wishket.com/project/153264/" target="_blank" rel="noopener noreferrer" class="text-sky-700 underline decoration-sky-300 hover:decoration-sky-500">AI(RAG) 기반 멘탈 케어 캘린더 앱 개발</a></td></tr>
+                <tr><td>카테고리</td><td>모바일 앱 (AOS/iOS) · AI(RAG) · 구독 서비스</td></tr>
+                <tr><td>제안 금액</td><td>22,500,000원 (VAT 별도)</td></tr>
+                <tr><td>제안 기간</td><td>90일</td></tr>
+                <tr><td>핵심 기술</td><td>Flutter, NestJS, PostgreSQL, OpenAI API, Pinecone, Firebase, 포트원</td></tr>
+              </table>
+
+              <h2>핵심 요구사항 분석</h2>
+              <ul>
+                <li><strong>소셜 간편 로그인</strong> — 카카오, 네이버, 애플 계정 연동 (Firebase Auth 활용)</li>
+                <li><strong>초기 진단 (온보딩)</strong> — 3~5개 객관식 문항으로 '기운 DNA(성향)' 파악</li>
+                <li><strong>자체 캐릭터 UI 연동</strong> — 라토, 호담 캐릭터를 튜토리얼 안내 및 미션 달성 리액션으로 활용</li>
+                <li><strong>기세 예측 캘린더</strong> — 초기 진단 데이터 + 날씨 API + ChatGPT API 결합으로 '오늘의 기운 상태' 자동 생성</li>
+                <li><strong>AI 맞춤형 멘탈 코칭 (RAG 필수)</strong> — 자체 텍스트 데이터를 벡터 DB화하여 검색 증강 생성 방식 응답</li>
+                <li><strong>데일리 푸시 알림</strong> — 아침 미션 알림 + 미수행자 저녁 리마인드 + 월간 리포트</li>
+                <li><strong>정기 구독 결제</strong> — 포트원 연동 월 4,900원, 무료/유료 권한 분리</li>
+                <li><strong>커머스 연동</strong> — 스마트스토어 아웃링크 버튼</li>
+                <li><strong>관리자 페이지</strong> — 사용자 관리, 콘텐츠 관리, 데이터 분석</li>
+              </ul>
+
+              <h2>제안 포인트</h2>
+              <p>본 프로젝트는 <strong>캘린더 앱 + AI(RAG) 코칭 + 게이미피케이션 미션 + 구독 결제</strong>가 결합된 복합 서비스입니다. 아래와 같은 이유로 효율적이고 높은 품질의 MVP를 납품할 수 있습니다:</p>
+              <ul>
+                <li><strong>캘린더 앱 직접 개발 경험</strong> — Flutter 기반 소셜 캘린더 앱(Calendar Share)을 기획부터 배포까지 완수. 캘린더 라이브러리 커스텀, 이벤트 관리, 푸시 알림 7종 구현 경험 보유</li>
+                <li><strong>게이미피케이션 + 캐릭터 시스템 경험</strong> — DayStarter 앱에서 Spine 2D 캐릭터 시스템, 데일리 미션, 루트박스 이코노미, 행동 변화 유도 메커니즘을 구현. '반야루틴'의 캐릭터 연동 + 미션 시스템과 직접적 유사성</li>
+                <li><strong>AI/RAG 기술 역량</strong> — AI 에이전트 프레임워크를 직접 설계·구축하며 LLM API 연동, 벡터 검색, 프롬프트 엔지니어링에 깊은 경험 보유. RAG 파이프라인(임베딩→벡터 검색→응답 생성) 구축 가능</li>
+                <li><strong>결제 + 구독 시스템 경험</strong> — 복수 프로젝트에서 결제 연동(포트원, PG사) 및 유료/무료 권한 분리 구현 경험</li>
+                <li><strong>3개월 내 Flutter 앱 풀패키지 딜리버리</strong> — Fortune App(운세 앱)을 3개월 내 기획부터 스토어 출시까지 완수한 실적. 본 프로젝트도 동일한 일정 내 MVP 완성 가능</li>
+              </ul>
+
+              <h2>기술 스택 제안</h2>
+              <h3>개발 기술</h3>
+              <div class="flex flex-wrap gap-2 not-prose mb-4">
+                <span class="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-700">Flutter (Dart)</span>
+                <span class="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-700">NestJS</span>
+                <span class="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-700">TypeScript</span>
+                <span class="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-700">PostgreSQL</span>
+                <span class="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-700">OpenAI API</span>
+                <span class="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-700">Pinecone (Vector DB)</span>
+                <span class="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-700">LangChain</span>
+                <span class="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-700">Firebase Auth</span>
+                <span class="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-700">Firebase Cloud Messaging</span>
+                <span class="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-700">포트원 (결제)</span>
+                <span class="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-700">OpenWeatherMap API</span>
+                <span class="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-700">Docker</span>
+                <span class="rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-700">AWS</span>
+              </div>
+
+              <h3>기술 선택 근거</h3>
+              <table>
+                <tr><th>영역</th><th>기술</th><th>선택 이유</th></tr>
+                <tr><td>Frontend</td><td>Flutter (Dart)</td><td>단일 코드베이스로 AOS/iOS 동시 개발. 캘린더 라이브러리(TableCalendar) 커스텀 용이. 캐릭터 애니메이션 지원</td></tr>
+                <tr><td>Backend</td><td>NestJS (TypeScript)</td><td>모듈러 아키텍처로 RAG 파이프라인, 결제, 알림 서비스를 독립적으로 관리. TypeORM으로 DB 마이그레이션 관리</td></tr>
+                <tr><td>AI/RAG</td><td>OpenAI API + Pinecone + LangChain</td><td>자체 모델 학습 없이 기존 생성형 AI 활용. 자체 텍스트 데이터를 Pinecone에 벡터화하여 RAG 검색 증강 생성</td></tr>
+                <tr><td>인증</td><td>Firebase Auth</td><td>카카오, 네이버, 애플 소셜 로그인 SDK 통합이 가장 원활. Flutter 공식 플러그인 지원</td></tr>
+                <tr><td>결제</td><td>포트원 (구 아임포트)</td><td>공고 요구사항. 정기 구독 결제 API 제공. Flutter SDK 지원</td></tr>
+                <tr><td>날씨</td><td>OpenWeatherMap API</td><td>무료 티어 충분. 위치 기반 실시간 날씨 데이터 제공</td></tr>
+              </table>
+
+              <h3>협업 및 커뮤니케이션</h3>
+              <div class="flex flex-wrap gap-2 not-prose">
+                <span class="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-sm font-medium text-amber-700">Slack / 카카오톡</span>
+                <span class="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-sm font-medium text-amber-700">Zoom / Google Meet</span>
+                <span class="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-sm font-medium text-amber-700">Notion / Google Docs</span>
+                <span class="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-sm font-medium text-amber-700">GitHub</span>
+                <span class="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-sm font-medium text-amber-700">Figma</span>
+                <span class="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-sm font-medium text-amber-700">GitHub Issues</span>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- PAGE: 견적서 -->
+        <div id="page-estimate" class="page-section space-y-6">
+          <div class="rounded-2xl border border-slate-200/70 bg-white/95 p-5 shadow-soft backdrop-blur md:p-8">
+            <article class="doc-content">
+              <h1>견적서</h1>
+              <blockquote>본 견적서는 프로젝트 요구사항 분석을 기반으로 산출되었습니다.</blockquote>
+
+              <h2>견적 요약</h2>
+              <table>
+                <tr><th>항목</th><th>내용</th></tr>
+                <tr><td>프로젝트명</td><td>AI(RAG) 기반 멘탈 케어 캘린더 앱 개발</td></tr>
+                <tr><td>제안 금액</td><td><strong>22,500,000원 (VAT 별도)</strong></td></tr>
+                <tr><td>제안 기간</td><td>90일</td></tr>
+                <tr><td>견적 유효기간</td><td>제안일로부터 30일</td></tr>
+              </table>
+
+              <h2>상세 견적 내역</h2>
+              <table>
+                <thead>
+                  <tr><th>구분</th><th>항목</th><th>수량</th><th>단가</th><th>금액</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>기획</td><td>요구사항 분석, 화면 설계(와이어프레임), DB/API 설계</td><td>1식</td><td>-</td><td>2,810,000</td></tr>
+                  <tr><td>디자인</td><td>디자인 시스템, 캐릭터 UI 통합, 주요 화면 디자인(12+), 프로토타입</td><td>1식</td><td>-</td><td>5,220,000</td></tr>
+                  <tr><td>FE 개발</td><td>Flutter 크로스플랫폼 앱 (로그인, 캘린더, AI 채팅, 결제, 알림 등)</td><td>1식</td><td>-</td><td>7,230,000</td></tr>
+                  <tr><td>BE 개발</td><td>NestJS API 서버, RAG 시스템, 결제 연동, 관리자 API</td><td>1식</td><td>-</td><td>5,230,000</td></tr>
+                  <tr><td>QA/배포</td><td>기능 테스트, AOS/iOS 스토어 배포, 버퍼</td><td>1식</td><td>-</td><td>2,010,000</td></tr>
+                </tbody>
+                <tfoot>
+                  <tr><th colspan="4">합계 (VAT 별도)</th><th>22,500,000원</th></tr>
+                </tfoot>
+              </table>
+
+              <h2>산정 근거</h2>
+              <p>총 56 M/D(Man-Day) 공수를 기반으로 산정하였습니다. 캘린더 앱, 게이미피케이션 앱, AI 연동 프로젝트 등 유사 프로젝트 수행 경험을 바탕으로 효율적인 공수를 산출하였으며, 기획부터 디자인, 개발, QA, 스토어 배포까지 전 과정을 포함합니다.</p>
+
+              <h2>포함 사항</h2>
+              <ul>
+                <li>소스 코드 전체 이관 (Git)</li>
+                <li>개발 문서 (API 명세서, DB 스키마, 배포 가이드)</li>
+                <li>디자인 원본 파일 (Figma)</li>
+                <li>관리자 페이지</li>
+                <li>1개월 무상 하자 보수</li>
+                <li>배포 환경 세팅 (1회)</li>
+                <li>완료 보고서 및 매뉴얼</li>
+              </ul>
+
+              <h2>불포함 사항</h2>
+              <ul>
+                <li>서버 호스팅 비용 (AWS 등)</li>
+                <li>도메인 구매 비용</li>
+                <li>외부 유료 API 사용 비용 (OpenAI API, Pinecone, 날씨 API 등)</li>
+                <li>앱스토어 개발자 계정 등록비 (Google Play, Apple Developer)</li>
+                <li>하자 보수 기간 이후 유지보수</li>
+                <li>앱 마케팅 및 광고</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <!-- PAGE: 공수계산서 -->
+        <div id="page-manday" class="page-section space-y-6">
+          <div class="rounded-2xl border border-slate-200/70 bg-white/95 p-5 shadow-soft backdrop-blur md:p-8">
+            <article class="doc-content">
+              <h1>공수계산서</h1>
+              <blockquote>기능별 개발 공수(Man-Day)를 산출하여 일정과 비용의 근거를 제시합니다.</blockquote>
+
+              <h2>공수 요약</h2>
+              <table>
+                <tr><th>구분</th><th>공수 (M/D)</th><th>비율</th></tr>
+                <tr><td>기획/설계</td><td>7 M/D</td><td>12.5%</td></tr>
+                <tr><td>UI/UX 디자인</td><td>13 M/D</td><td>23.2%</td></tr>
+                <tr><td>FE 개발 (Flutter)</td><td>18 M/D</td><td>32.1%</td></tr>
+                <tr><td>BE 개발 (NestJS)</td><td>13 M/D</td><td>23.2%</td></tr>
+                <tr><td>QA/배포</td><td>5 M/D</td><td>9.0%</td></tr>
+                <tr><th>합계</th><th>56 M/D</th><th>100%</th></tr>
+              </table>
+
+              <h2>기능별 상세 공수</h2>
+              <table>
+                <thead>
+                  <tr><th>기능</th><th>세부 작업</th><th>담당</th><th>공수 (M/D)</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td rowspan="3">기획/설계</td><td>요구사항 분석 및 아키텍처 설계</td><td>기획</td><td>2</td></tr>
+                  <tr><td>화면 설계 (와이어프레임)</td><td>기획</td><td>3</td></tr>
+                  <tr><td>DB 스키마 및 API 설계</td><td>기획</td><td>2</td></tr>
+                  <tr><td rowspan="4">UI/UX 디자인</td><td>디자인 시스템 설정</td><td>디자인</td><td>2</td></tr>
+                  <tr><td>캐릭터(라토, 호담) UI 통합 디자인</td><td>디자인</td><td>3</td></tr>
+                  <tr><td>주요 화면 디자인 (12+ 화면)</td><td>디자인</td><td>6</td></tr>
+                  <tr><td>프로토타입 및 리뷰</td><td>디자인</td><td>2</td></tr>
+                  <tr><td rowspan="3">소셜 로그인 + 온보딩</td><td>카카오/네이버/애플 SSO API 연동</td><td>BE</td><td>2</td></tr>
+                  <tr><td>로그인/회원가입 UI</td><td>FE</td><td>1.5</td></tr>
+                  <tr><td>초기 진단 화면 (기운 DNA)</td><td>FE</td><td>1.5</td></tr>
+                  <tr><td rowspan="2">캐릭터 UI 연동</td><td>튜토리얼 가이드 플로우</td><td>FE</td><td>1</td></tr>
+                  <tr><td>미션 완료 스탬프/리액션</td><td>FE</td><td>1</td></tr>
+                  <tr><td rowspan="3">기세 예측 캘린더</td><td>캘린더 라이브러리 커스텀</td><td>FE</td><td>2.5</td></tr>
+                  <tr><td>날씨 API + ChatGPT API 연동 엔진</td><td>BE</td><td>2.5</td></tr>
+                  <tr><td>기운 상태 텍스트 생성/노출</td><td>FE</td><td>1.5</td></tr>
+                  <tr><td rowspan="4">AI 멘탈 코칭 (RAG)</td><td>벡터 DB 구축 (텍스트 임베딩)</td><td>BE</td><td>2</td></tr>
+                  <tr><td>RAG 파이프라인 (검색 → 생성)</td><td>BE</td><td>2</td></tr>
+                  <tr><td>AI 채팅 UI</td><td>FE</td><td>2</td></tr>
+                  <tr><td>프롬프트 최적화 및 테스트</td><td>BE</td><td>1</td></tr>
+                  <tr><td rowspan="3">푸시 알림 + 리포트</td><td>FCM 푸시 서비스 구축</td><td>BE</td><td>1.5</td></tr>
+                  <tr><td>알림 UI + 딥링크</td><td>FE</td><td>1</td></tr>
+                  <tr><td>월간 리포트 생성 및 표시</td><td>BE+FE</td><td>2</td></tr>
+                  <tr><td rowspan="3">구독 결제</td><td>포트원 정기결제 연동</td><td>BE</td><td>1.5</td></tr>
+                  <tr><td>구독 관리 + 권한 분리 UI</td><td>FE</td><td>1.5</td></tr>
+                  <tr><td>아웃링크 (스마트스토어)</td><td>FE</td><td>0.5</td></tr>
+                  <tr><td rowspan="2">관리자 페이지</td><td>관리자 웹 대시보드 UI</td><td>FE</td><td>2</td></tr>
+                  <tr><td>관리자 API</td><td>BE</td><td>1.5</td></tr>
+                  <tr><td>공통</td><td>앱 공통 컴포넌트/네비게이션</td><td>FE</td><td>1.5</td></tr>
+                  <tr><td rowspan="3">QA/배포</td><td>기능 테스트</td><td>QA</td><td>2</td></tr>
+                  <tr><td>AOS/iOS 스토어 배포</td><td>QA</td><td>2</td></tr>
+                  <tr><td>버퍼</td><td>QA</td><td>1</td></tr>
+                </tbody>
+              </table>
+
+              <h2>산정 기준</h2>
+              <ul>
+                <li>1 M/D = 8시간 기준 (1인 1일 작업량)</li>
+                <li>주 5일 근무 기준</li>
+                <li>버퍼 10~15% 포함</li>
+                <li>유사 프로젝트 수행 경험 기반 효율적 개발</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <!-- PAGE: PRD -->
+        <div id="page-prd" class="page-section space-y-6">
+          <div class="rounded-2xl border border-slate-200/70 bg-white/95 p-5 shadow-soft backdrop-blur md:p-8">
+            <article class="doc-content">
+              <h1>PRD (Product Requirements Document)</h1>
+              <blockquote>프로젝트 요구사항을 정의하고 기능 범위를 명확히 합니다.</blockquote>
+
+              <h2>1. 프로젝트 배경 및 목적</h2>
+              <p>3040 세대의 감정 자본을 관리하고 매일의 기세를 예측해주는 모바일 앱 <strong>'반야루틴'</strong>의 MVP를 구축합니다. 생체 심리 데이터와 생성형 AI를 결합하여, 유저에게 매일 맞춤형 오프라인 행동 미션을 처방하고 일상의 기세를 관리하는 서비스입니다.</p>
+              <ul>
+                <li><strong>타겟 사용자</strong>: 3040 세대 (30~40대) 직장인 및 자영업자</li>
+                <li><strong>핵심 가치</strong>: 매일의 감정/기운 상태를 AI가 예측하고, 맞춤형 행동 미션으로 기세 관리</li>
+                <li><strong>비즈니스 모델</strong>: 월 4,900원 정기 구독 (프리미엄) + 굿즈 커머스</li>
+                <li><strong>플랫폼</strong>: AOS/iOS 크로스플랫폼 (Flutter)</li>
+              </ul>
+
+              <h2>2. 사용자 정의</h2>
+              <table>
+                <thead>
+                  <tr><th>사용자 유형</th><th>설명</th><th>주요 기능</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>일반 사용자 (무료)</td><td>기본 서비스 이용자</td><td>소셜 로그인, 초기 진단, 기본 기세 캘린더, 제한된 AI 코칭(일 1회)</td></tr>
+                  <tr><td>프리미엄 사용자 (유료)</td><td>월 4,900원 구독자</td><td>무제한 AI 코칭, 심층 미션, 월간지, 상세 월간 리포트</td></tr>
+                  <tr><td>관리자</td><td>서비스 운영자</td><td>사용자 관리, 콘텐츠(미션/텍스트) 관리, 구독 현황, 데이터 분석</td></tr>
+                </tbody>
+              </table>
+
+              <h2>3. 기능 요구사항</h2>
+
+              <h3>3.1 소셜 간편 로그인 및 초기 진단 (온보딩)</h3>
+              <ul>
+                <li><strong>[필수]</strong> 카카오, 네이버, 애플 계정 연동 간편 로그인</li>
+                <li><strong>[필수]</strong> 신규 유저 최초 로그인 시 3~5개 객관식 문항으로 '기운 DNA(성향)' 파악</li>
+                <li><strong>[필수]</strong> 진단 결과를 유저 프로필에 저장하여 AI 코칭 및 기세 예측에 활용</li>
+              </ul>
+
+              <h3>3.2 자체 캐릭터 UI 연동</h3>
+              <ul>
+                <li><strong>[필수]</strong> 클라이언트 제공 캐릭터(라토, 호담) 이미지 소스 앱 내 통합</li>
+                <li><strong>[필수]</strong> 앱 최초 실행 시 캐릭터 기반 튜토리얼 안내</li>
+                <li><strong>[필수]</strong> 캘린더 미션 달성 시 캐릭터 완료 스탬프/리액션 표시</li>
+              </ul>
+
+              <h3>3.3 기세 예측 캘린더</h3>
+              <ul>
+                <li><strong>[필수]</strong> 오픈소스 캘린더 라이브러리를 서비스 톤앤매너에 맞게 커스텀</li>
+                <li><strong>[필수]</strong> [초기 진단 데이터] + [오늘의 날씨 API] + [ChatGPT API] 결합</li>
+                <li><strong>[필수]</strong> '오늘의 기운 상태' 텍스트를 캘린더 상단에 자동 생성 및 노출</li>
+                <li><strong>[필수]</strong> 일별 미션 표시 및 달성 여부 추적</li>
+              </ul>
+
+              <h3>3.4 AI 맞춤형 멘탈 코칭 (RAG)</h3>
+              <ul>
+                <li><strong>[필수]</strong> 유저가 고민을 텍스트로 입력하면 AI가 맞춤형 솔루션 답변</li>
+                <li><strong>[필수]</strong> 자체 텍스트 데이터(스레드, 블로그 칼럼 등)를 벡터 DB화</li>
+                <li><strong>[필수]</strong> RAG(검색 증강 생성) 방식으로 응답 로직 구축</li>
+                <li><strong>[선택]</strong> 대화 이력 저장 및 맥락 유지</li>
+              </ul>
+
+              <h3>3.5 데일리 푸시 알림 및 데이터 누적</h3>
+              <ul>
+                <li><strong>[필수]</strong> 매일 아침 '기세 캘린더 확인 및 미션' 자동 푸시</li>
+                <li><strong>[필수]</strong> 미수행자 대상 저녁 리마인드 푸시</li>
+                <li><strong>[필수]</strong> 한 달 주기 미션 달성률 누적 분석 → 월간 리포트</li>
+              </ul>
+
+              <h3>3.6 정기 구독 결제 및 커머스 연동</h3>
+              <ul>
+                <li><strong>[필수]</strong> 포트원(구 아임포트) 연동 '월 4,900원 정기 결제(구독)'</li>
+                <li><strong>[필수]</strong> 무료/유료 유저 권한 분리</li>
+                <li><strong>[필수]</strong> 유료 유저 전용: 심층 미션 및 월간지 오픈</li>
+                <li><strong>[필수]</strong> 외부 자사몰(스마트스토어) 아웃링크 버튼</li>
+              </ul>
+
+              <h3>3.7 관리자 페이지</h3>
+              <ul>
+                <li><strong>[필수]</strong> 사용자 관리 (가입 현황, 구독 상태)</li>
+                <li><strong>[필수]</strong> 콘텐츠 관리 (미션, RAG 소스 텍스트)</li>
+                <li><strong>[필수]</strong> 데이터 분석 대시보드 (DAU, 구독률, 미션 달성률)</li>
+              </ul>
+
+              <h2>4. 비기능 요구사항</h2>
+              <table>
+                <thead>
+                  <tr><th>항목</th><th>요구사항</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>성능</td><td>API 응답 시간 500ms 이내 (AI 응답 제외), AI 응답 3초 이내</td></tr>
+                  <tr><td>보안</td><td>HTTPS 전송 암호화, JWT 토큰 인증, 개인정보 AES 암호화</td></tr>
+                  <tr><td>확장성</td><td>모듈러 아키텍처로 향후 기능 추가 용이</td></tr>
+                  <tr><td>가용성</td><td>99.5% 이상 서비스 가용성</td></tr>
+                  <tr><td>호환성</td><td>Android 10+, iOS 15+ 지원</td></tr>
+                </tbody>
+              </table>
+
+              <h2>5. 기술 제약사항</h2>
+              <ul>
+                <li>AOS/iOS 크로스플랫폼 필수 → Flutter 제안</li>
+                <li>자체 AI 모델 학습 없이 기존 생성형 AI API(ChatGPT) 활용</li>
+                <li>RAG 기술 적용 필수 → Pinecone + LangChain 제안</li>
+                <li>포트원(구 아임포트) 결제 연동 필수</li>
+                <li>클라이언트 제공 캐릭터 소스(라토, 호담) 활용 필수</li>
+                <li>정부지원사업(예비창업패키지) 규정 준수 행정 서류 구비 필요</li>
+              </ul>
+
+              <h2>6. 범위 외 사항 (Out of Scope)</h2>
+              <ul>
+                <li>자체 AI 모델 학습/훈련</li>
+                <li>서버 호스팅 및 외부 API 사용 비용</li>
+                <li>앱스토어 개발자 계정 등록 및 관리</li>
+                <li>앱 마케팅, 광고, SEO/ASO</li>
+                <li>캐릭터 디자인 원본 제작 (클라이언트 제공)</li>
+                <li>하자보수 기간(1개월) 이후 유지보수</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <!-- PAGE: 일정 제안 -->
+        <div id="page-timeline" class="page-section space-y-6">
+          <div class="rounded-2xl border border-slate-200/70 bg-white/95 p-5 shadow-soft backdrop-blur md:p-8">
+            <article class="doc-content">
+              <h1>일정 제안</h1>
+              <blockquote>총 90일 기준 단계별 마일스톤 및 산출물을 제안합니다.</blockquote>
+
+              <h2>전체 일정 요약</h2>
+              <table>
+                <thead>
+                  <tr><th>단계</th><th>기간</th><th>주요 산출물</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Phase 1: 기획 + 디자인</td><td>Day 1–23</td><td>요구사항 정의서, 와이어프레임, DB 스키마, Figma 디자인</td></tr>
+                  <tr><td>Phase 2: 핵심 기능 개발</td><td>Day 20–55</td><td>로그인, 캘린더, 캐릭터 UI, AI 멘탈 코칭(RAG)</td></tr>
+                  <tr><td>Phase 3: 부가 기능 + 통합</td><td>Day 53–75</td><td>푸시 알림, 구독 결제, 관리자 페이지</td></tr>
+                  <tr><td>Phase 4: QA + 배포</td><td>Day 73–90</td><td>스토어 배포, 소스 이관, 완료 보고서</td></tr>
+                </tbody>
+              </table>
+            </article>
+          </div>
+
+          <div class="rounded-2xl border border-slate-200/70 bg-white/95 p-5 shadow-soft backdrop-blur md:p-8">
+            <h2 class="mb-4 text-sm font-semibold tracking-[0.14em] text-slate-500">상세 타임라인</h2>
+            <div class="timeline">
+              <div class="timeline-item">
+                <p class="text-sm font-semibold tracking-[0.14em] text-sky-700">PHASE 1</p>
+                <h4 class="text-base font-semibold text-slate-900">기획 및 디자인</h4>
+                <p class="mb-1 text-sm font-semibold text-amber-600">Day 1–23 (23일)</p>
+                <p class="text-sm leading-7 text-slate-600">요구사항 분석, 화면 설계(와이어프레임), DB 스키마/API 설계, 디자인 시스템 설정, 캐릭터(라토, 호담) UI 통합 디자인, 주요 화면 디자인(12+), 프로토타입</p>
+                <ul class="mt-2 list-disc pl-5 text-sm text-slate-500">
+                  <li>산출물: 요구사항 정의서, 와이어프레임, ERD, API 명세서, Figma 디자인 시안</li>
+                  <li>Day 1–10: 기획/설계 집중</li>
+                  <li>Day 8–23: 디자인 (기획과 일부 병렬 진행)</li>
+                </ul>
+              </div>
+              <div class="timeline-item">
+                <p class="text-sm font-semibold tracking-[0.14em] text-sky-700">PHASE 2</p>
+                <h4 class="text-base font-semibold text-slate-900">핵심 기능 개발</h4>
+                <p class="mb-1 text-sm font-semibold text-amber-600">Day 20–55 (36일)</p>
+                <p class="text-sm leading-7 text-slate-600">프로젝트 셋업, 소셜 로그인(카카오/네이버/애플), 온보딩(초기 진단), 캐릭터 UI 연동, 기세 예측 캘린더(날씨API + ChatGPT API), RAG 시스템 구축, AI 멘탈 코칭 채팅</p>
+                <ul class="mt-2 list-disc pl-5 text-sm text-slate-500">
+                  <li>산출물: 핵심 기능 동작 빌드 (로그인 → 캘린더 → AI 코칭)</li>
+                  <li>Day 20–30: 앱 셋업, 소셜 로그인, 온보딩, 캐릭터 UI</li>
+                  <li>Day 28–42: 기세 예측 캘린더, 날씨/ChatGPT API 연동</li>
+                  <li>Day 40–55: RAG 벡터 DB 구축, AI 채팅 UI, 프롬프트 최적화</li>
+                </ul>
+              </div>
+              <div class="timeline-item">
+                <p class="text-sm font-semibold tracking-[0.14em] text-sky-700">PHASE 3</p>
+                <h4 class="text-base font-semibold text-slate-900">부가 기능 + 통합</h4>
+                <p class="mb-1 text-sm font-semibold text-amber-600">Day 53–75 (23일)</p>
+                <p class="text-sm leading-7 text-slate-600">데일리 푸시 알림(FCM), 월간 리포트, 포트원 정기 구독 결제, 무료/유료 권한 분리, 스마트스토어 아웃링크, 관리자 페이지, 전체 기능 통합</p>
+                <ul class="mt-2 list-disc pl-5 text-sm text-slate-500">
+                  <li>산출물: 전체 기능 통합 빌드 (알림, 결제, 관리자 포함)</li>
+                  <li>Day 53–62: 푸시 알림, 월간 리포트</li>
+                  <li>Day 60–70: 구독 결제(포트원), 권한 분리</li>
+                  <li>Day 68–75: 관리자 페이지, 전체 통합</li>
+                </ul>
+              </div>
+              <div class="timeline-item">
+                <p class="text-sm font-semibold tracking-[0.14em] text-sky-700">PHASE 4</p>
+                <h4 class="text-base font-semibold text-slate-900">QA 및 스토어 배포</h4>
+                <p class="mb-1 text-sm font-semibold text-amber-600">Day 73–90 (18일)</p>
+                <p class="text-sm leading-7 text-slate-600">기능 테스트, 버그 수정, AOS/iOS 스토어 심사 제출, 최종 검수 및 인수인계</p>
+                <ul class="mt-2 list-disc pl-5 text-sm text-slate-500">
+                  <li>산출물: 스토어 배포 완료, 소스 코드 이관(Git), 완료 보고서, 매뉴얼</li>
+                  <li>Day 73–82: 기능 테스트, 버그 수정</li>
+                  <li>Day 80–88: 스토어 심사 제출 (AOS/iOS)</li>
+                  <li>Day 88–90: 최종 검수, 소스 이관, 문서 납품</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-slate-200/70 bg-white/95 p-5 shadow-soft backdrop-blur md:p-8">
+            <article class="doc-content">
+              <h2>마일스톤 체크포인트</h2>
+              <table>
+                <thead>
+                  <tr><th>마일스톤</th><th>시점</th><th>검수 기준</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>M1: 설계 완료</td><td>Day 10</td><td>요구사항 정의서, 와이어프레임, DB 스키마, API 명세서 승인</td></tr>
+                  <tr><td>M2: 디자인 완료</td><td>Day 23</td><td>Figma 디자인 시안 전체 승인 (캐릭터 통합 포함)</td></tr>
+                  <tr><td>M3: 핵심 기능 완료</td><td>Day 55</td><td>로그인 → 캘린더 → AI 코칭 플로우 동작 확인</td></tr>
+                  <tr><td>M4: 전체 기능 통합</td><td>Day 75</td><td>결제, 알림, 관리자 포함 전체 기능 동작 확인</td></tr>
+                  <tr><td>M5: 최종 납품</td><td>Day 90</td><td>스토어 배포 완료, 소스 이관, 문서 납품</td></tr>
+                </tbody>
+              </table>
+
+              <h2>커뮤니케이션 계획</h2>
+              <table>
+                <tr><th>항목</th><th>방식</th><th>주기</th></tr>
+                <tr><td>일일 진행 공유</td><td>Slack / 카카오톡</td><td>매일</td></tr>
+                <tr><td>주간 미팅</td><td>Zoom / Google Meet</td><td>주 1회</td></tr>
+                <tr><td>마일스톤 리뷰</td><td>화면 공유 + 문서</td><td>단계 완료 시</td></tr>
+                <tr><td>이슈 트래킹</td><td>GitHub Issues</td><td>상시</td></tr>
+              </table>
+            </article>
+          </div>
+        </div>
+
+        <!-- PAGE: 포트폴리오 -->
+        <div id="page-portfolio" class="page-section space-y-6">
+          <div class="rounded-2xl border border-slate-200/70 bg-white/95 p-5 shadow-soft backdrop-blur md:p-8">
+            <article class="doc-content">
+              <h1>유사 프로젝트 경험</h1>
+              <blockquote>본 프로젝트와 유사한 기능/기술 스택을 활용한 수행 경험을 소개합니다.</blockquote>
+            </article>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-4 text-center shadow-soft backdrop-blur">
+              <p class="text-2xl font-bold text-sky-700">13+</p>
+              <p class="mt-1 text-xs text-slate-500">완료 프로젝트</p>
+            </div>
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-4 text-center shadow-soft backdrop-blur">
+              <p class="text-2xl font-bold text-sky-700">6+</p>
+              <p class="mt-1 text-xs text-slate-500">크로스플랫폼 앱</p>
+            </div>
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-4 text-center shadow-soft backdrop-blur">
+              <p class="text-2xl font-bold text-sky-700">AI/RAG</p>
+              <p class="mt-1 text-xs text-slate-500">기술 경험 보유</p>
+            </div>
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-4 text-center shadow-soft backdrop-blur">
+              <p class="text-2xl font-bold text-sky-700">90일</p>
+              <p class="mt-1 text-xs text-slate-500">MVP 납품</p>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <!-- Calendar Share -->
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft backdrop-blur md:p-8">
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-sky-100 text-sky-700 border-sky-200">B2C 앱 · 캘린더</div>
+              <h3 class="text-lg font-semibold tracking-tight text-slate-900">Calendar Share — 소셜 캘린더 공유 플랫폼</h3>
+              <p class="mt-1 text-sm text-slate-400">소셜 캘린더 · 2025 · 참여율 100%</p>
+              <div class="mt-3 doc-content">
+                <h4>프로젝트 개요</h4>
+                <p>캘린더 앱과 소셜 미디어를 하나로 통합한 크로스플랫폼 소셜 캘린더 플랫폼. 소셜 포스트에 캘린더 이벤트를 첨부하고, 좋아요만으로 이벤트를 내 캘린더에 추가하는 소셜 스케줄링 솔루션.</p>
+                <h4>핵심 기능</h4>
+                <ul>
+                  <li>오픈소스 캘린더 라이브러리(TableCalendar) 커스텀 및 이벤트 관리</li>
+                  <li>소셜 피드 + 캘린더 퓨전 (좋아요 = 일정 추가)</li>
+                  <li>7종 FCM 푸시 알림 시스템 + 딥링크</li>
+                  <li>QR 기반 오프라인 소셜 디스커버리</li>
+                  <li>Firebase + Supabase 듀얼 백엔드</li>
+                </ul>
+                <h4>본 프로젝트와의 유사점</h4>
+                <p><strong>캘린더 라이브러리 커스텀</strong>, <strong>7종 푸시 알림 시스템</strong>, <strong>Flutter 크로스플랫폼</strong>, <strong>소셜 로그인</strong> — 반야루틴의 기세 예측 캘린더와 데일리 푸시 알림 구현에 직접 적용 가능한 경험입니다.</p>
+                <h4>기술 스택</h4>
+                <div class="flex flex-wrap gap-1.5 not-prose">
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Flutter 3.27</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Dart</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Firebase</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Supabase</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">FCM</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">TableCalendar</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Provider</span>
+                </div>
+                <p class="mt-2 text-sm text-slate-400">17,628 LOC · 45+ 화면 · 7종 알림 · Android + iOS</p>
+              </div>
+            </div>
+
+            <!-- DayStarter -->
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft backdrop-blur md:p-8">
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-sky-100 text-sky-700 border-sky-200">B2C 앱 · 게이미피케이션</div>
+              <h3 class="text-lg font-semibold tracking-tight text-slate-900">DayStarter — 게이미피케이션 수면 보상 알람 앱</h3>
+              <p class="mt-1 text-sm text-slate-400">행동변화 · 자체 프로덕트 · 2022~2023 · 참여율 100%</p>
+              <div class="mt-3 doc-content">
+                <h4>프로젝트 개요</h4>
+                <p>센서 기반 수면 인증 + 게이미피케이션 + 토큰 이코노미를 결합한 알람 앱. 캐릭터(Deimo) 시스템, 루트박스, 퀘스트, 리그 랭킹 등 모바일 게임 수준의 리텐션 메커니즘을 구현한 행동 변화 유도 앱.</p>
+                <h4>핵심 기능</h4>
+                <ul>
+                  <li>Spine 2D 스켈레톤 애니메이션 캐릭터 시스템 (36+ 스프라이트)</li>
+                  <li>데일리 미션 + 퀘스트 + 7단계 루트박스 이코노미</li>
+                  <li>센서 기반 수면 검증 (ML Kit, 조도, 배터리)</li>
+                  <li>행동 변화 게이미피케이션 (듀얼 토큰, 리그 랭킹)</li>
+                  <li>6개 언어 스토어 리스팅</li>
+                </ul>
+                <h4>본 프로젝트와의 유사점</h4>
+                <p><strong>캐릭터 시스템</strong>(라토/호담 ↔ Deimo), <strong>데일리 미션 + 행동 변화 유도</strong>, <strong>푸시 알림</strong>, <strong>게이미피케이션 리텐션</strong> — 반야루틴의 캐릭터 UI 연동, 데일리 미션 처방, 미션 달성 리액션 구현에 직접 적용 가능한 경험입니다.</p>
+                <h4>기술 스택</h4>
+                <div class="flex flex-wrap gap-1.5 not-prose">
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Flutter</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Kotlin</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">NestJS</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">PostgreSQL</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Firebase</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Spine 2D</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">ML Kit</span>
+                </div>
+                <p class="mt-2 text-sm text-slate-400">48 화면 · 37 DB 모델 · ~50K LOC · 3 플랫폼</p>
+              </div>
+            </div>
+
+            <!-- Fortune App -->
+            <div class="rounded-2xl border border-slate-200/70 bg-white/90 p-5 shadow-soft backdrop-blur md:p-8">
+              <div class="mb-3 inline-flex rounded-full border px-2.5 py-1 text-sm font-semibold tracking-[0.12em] bg-sky-100 text-sky-700 border-sky-200">B2C 앱 · 라이프스타일</div>
+              <h3 class="text-lg font-semibold tracking-tight text-slate-900">Fortune App — 사주 기반 맞춤형 운세 앱</h3>
+              <p class="mt-1 text-sm text-slate-400">엔터테인먼트 · 2024.07~2024.09 · 참여율 100%</p>
+              <div class="mt-3 doc-content">
+                <h4>프로젝트 개요</h4>
+                <p>사주(四柱) 기반 맞춤형 운세, 행운의 번호 추천, 궁합 분석을 제공하는 모바일 앱. 기획부터 스토어 출시까지 3개월 풀패키지 딜리버리.</p>
+                <h4>핵심 기능</h4>
+                <ul>
+                  <li>사주 분석 엔진 연동 (외부 API)</li>
+                  <li>포인트 & 데일리 체크인 리워드 시스템</li>
+                  <li>Google / Apple 소셜 로그인</li>
+                  <li>자체 광고 SDK (flutter_ads) 개발</li>
+                  <li>Clean Architecture + BLoC 패턴</li>
+                </ul>
+                <h4>본 프로젝트와의 유사점</h4>
+                <p><strong>Flutter B2C 앱 3개월 풀패키지 딜리버리</strong>, <strong>소셜 로그인</strong>, <strong>외부 API 연동 기반 맞춤형 콘텐츠 생성</strong>, <strong>데일리 체크인/리워드</strong> — 동일한 일정(90일) 내 기획~스토어 출시 완수 실적입니다.</p>
+                <h4>기술 스택</h4>
+                <div class="flex flex-wrap gap-1.5 not-prose">
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Flutter 3.22</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Dart</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Firebase</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">BLoC/Cubit</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Node.js</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-sm text-slate-500">Retrofit+Dio</span>
+                </div>
+                <p class="mt-2 text-sm text-slate-400">305 Dart 파일 · ~16K LOC · 12+ 화면 · 3개월 딜리버리</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-sky-200/70 bg-gradient-to-br from-sky-50 to-brand-50 p-6 text-center shadow-soft md:p-10">
+            <h2 class="text-xl font-bold tracking-tight text-slate-900 md:text-2xl">함께 만들어 가겠습니다</h2>
+            <p class="mx-auto mt-3 max-w-lg text-sm leading-7 text-slate-600">프로젝트에 대해 더 자세한 논의를 원하시면 미팅을 신청해 주세요.</p>
+            <a href="https://www.wishket.com/partners/p/blueverse1/portfolio/" target="_blank" rel="noopener noreferrer"
+               class="mt-5 inline-flex items-center gap-2 rounded-full border border-sky-300 bg-white px-5 py-2 text-sm font-semibold text-sky-700 shadow-sm transition hover:-translate-y-0.5 hover:border-sky-400 hover:shadow-soft">
+              위시켓에서 Blue Verse 보기 <span aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+    <footer class="mt-10 border-t border-slate-200 pt-6 text-xs text-slate-500">
+      &copy; 2026 Blue Verse &middot; 본 제안서는 AI(RAG) 기반 멘탈 케어 캘린더 앱 개발 프로젝트를 위해 작성되었습니다.
+    </footer>
+  </div>
+
+  <!-- SPA Router -->
+  <script>
+    const pages = ['home', 'overview', 'estimate', 'manday', 'prd', 'timeline', 'portfolio'];
+
+    function navigate(pageId) {
+      if (!pages.includes(pageId)) pageId = 'home';
+      document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+      const target = document.getElementById('page-' + pageId);
+      if (target) target.classList.add('active');
+      document.querySelectorAll('.nav-link').forEach(link => {
+        if (link.dataset.page === pageId) {
+          link.className = 'nav-link block rounded-xl border px-3 py-2 text-sm border-sky-200 bg-sky-50 font-medium text-sky-700';
+        } else {
+          link.className = 'nav-link block rounded-xl border border-transparent px-3 py-2 text-sm text-slate-600 hover:border-slate-200 hover:bg-slate-50 hover:text-slate-900';
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      closeSidebar();
+    }
+
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebar-backdrop').classList.remove('open');
+    }
+
+    function handleHash() {
+      const hash = (location.hash || '#home').replace('#', '');
+      navigate(hash);
+    }
+    window.addEventListener('hashchange', handleHash);
+    window.addEventListener('DOMContentLoaded', handleHash);
+
+    document.getElementById('sidebar-toggle').addEventListener('click', function() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebar-backdrop').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>
